@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['transactions.list']}</h3>
+	<h:form id="listTransactions">
+
+		<p:messages id="messages" closable="true" />
+
+		<h:panelGrid columns="2">
+			<p:outputLabel value="#{labels['applications.application']}:"
+				for="applicationId" />
+			<p:selectOneMenu id="applicationId"
+				value="#{transactionBean.transaction.application}"
+				converter="#{applicationConverter}" panelStyle="width:250px"
+				effect="fade" var="applica" style="width:250px" filter="true"
+				filterMatchMode="startsWith">
+
+				<f:selectItem itemLabel="#{labels['global.select.one']}"
+					noSelectionOption="true" />
+
+				<f:selectItems var="app" value="#{applicationBean.applications}"
+					itemLabel="#{app.description}" itemValue="#{app}" />
+
+				<p:column>
+					<p:outputLabel value="#{applica.code}" />
+				</p:column>
+
+				<p:column>
+					<p:outputLabel value="#{applica.description}" />
+				</p:column>
+
+			</p:selectOneMenu>
+
+
+			<p:commandButton icon="ui-icon-search"
+				value="#{labels['global.search']}"
+				actionListener="#{transactionBean.searchByApplication}"
+				process="@this applicationId" update="transactions" />
+
+			<p:commandButton value="#{labels['global.clean']}"
+				action="#{transactionBean.cleanTransaction}" process="@this"
+				update="@form" icon="ui-icon-refresh" />
+
+		</h:panelGrid>
+
+		<p:spacer />
+
+		<p:tabView id="transactions">
+			<p:tab title="#{labels['transactions']}">
+
+				<p:dataTable var="transaction"
+					value="#{transactionBean.transactions}"
+					emptyMessage="#{labels['global.empty.table']}">
+
+					<p:column headerText="#{labels['global.code']}" width="60">
+						<p:outputLabel value="#{transaction.code}" />
+					</p:column>
+
+					<p:column headerText="#{labels['global.name']}">
+						<p:outputLabel value="#{transaction.name}" />
+					</p:column>
+
+					<p:column width="54">
+
+						<p:commandButton icon="ui-icon-pencil" update=":content"
+							action="#{pageBean.setPage('/transaction/create-transaction')}">
+							<f:setPropertyActionListener
+								target="#{transactionBean.transaction}" value="#{transaction}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash"
+							action="#{transactionBean.removeTransaction(transaction)}"
+							process="@this" update="@form">
+							<p:confirm icon="ui-icon-alert"
+								header="#{labels['global.remove.confirmation']}"
+								message="#{labels['transactions.remove.confirmation.question']}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</p:tab>
+
+		</p:tabView>
+	</h:form>
+
+</ui:composition>

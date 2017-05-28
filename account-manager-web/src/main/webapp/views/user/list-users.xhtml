@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['users.list']}</h3>
+	<h:form id="listApplications">
+
+		<p:messages id="messages" closable="true" />
+
+		<p:tabView>
+			<p:tab title="#{labels['global.users']}">
+
+				<p:dataTable var="user" value="#{userBean.users}"
+					emptyMessage="#{labels['global.empty.table']}">
+
+					<p:column headerText="#{labels['users.full.name']}">
+						<p:outputLabel value="#{user.fullName}" />
+					</p:column>
+
+					<p:column headerText="#{labels['users.email']}">
+						<p:outputLabel value="#{user.email}" />
+					</p:column>
+
+					<p:column headerText="#{labels['users.username']}">
+						<p:outputLabel value="#{user.username}" />
+					</p:column>
+
+					<p:column width="54">
+
+						<p:commandButton icon="ui-icon-pencil" update=":content"
+							action="#{pageBean.setPage('/user/create-user')}">
+							<f:setPropertyActionListener target="#{userBean.user}"
+								value="#{user}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash"
+							action="#{userBean.removeUser(user)}" process="@this"
+							update="@form">
+							<p:confirm icon="ui-icon-alert"
+								header="#{labels['global.remove.confirmation']}"
+								message="#{labels['users.remove.confirmation.question']}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</p:tab>
+
+		</p:tabView>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Gestão de Acessos</title>
+</h:head>
+
+<h:body>
+	<h:outputStylesheet name="css/style.css" />
+
+	<p:layout fullPage="true">
+		<!-- header -->
+		<p:layoutUnit position="north" size="80">
+
+			<h:panelGrid columns="3" width="100%">
+				<p:graphicImage library="img" name="acessos.jpg" height="48px"
+					style="margin-right:-30px;" />
+				<h2>Gestão de Acessos</h2>
+
+				<h:panelGroup style="float:right;">
+					<p:outputLabel styleClass="helloUser"
+						value=" Seja bem-vindo Sr(a): #{loginBean.getUserContext().fullName}" />
+
+					<!-- logout button -->
+					<p:commandButton value="#{labels['global.logout']}"
+						action="#{loginBean.logout}" icon="ui-icon-power" />
+
+				</h:panelGroup>
+
+			</h:panelGrid>
+
+
+			<!-- tabela de dialogo de confirmação -->
+			<p:confirmDialog global="true">
+				<p:commandButton value="#{labels['global.no']}" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				<p:commandButton value="#{labels['global.yes']}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			</p:confirmDialog>
+
+		</p:layoutUnit>
+
+		<!-- menu side bar -->
+		<p:layoutUnit position="west" size="250"
+			header="#{labels['global.main.menu']}" collapsible="true">
+			<p:separator />
+			<ui:insert name="menu" />
+		</p:layoutUnit>
+
+		<!-- content  -->
+		<p:layoutUnit position="center">
+
+			<h:panelGroup id="content">
+				<p:ajaxStatus>
+					<f:facet name="start">
+						<h:graphicImage library="img" name="ajax-loader.gif"
+							styleClass="ajax-status" />
+					</f:facet>
+				</p:ajaxStatus>
+
+				<ui:insert name="content" />
+			</h:panelGroup>
+
+		</p:layoutUnit>
+
+		<!-- footer  -->
+		<p:layoutUnit position="south" size="40">
+			<div id="footer">MozView Technologies, Lda. Matola - Moçambique
+				® 2014 - 2015 ® #{labels['global.version']}</div>
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+</html>

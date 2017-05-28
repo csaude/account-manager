@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['units.list']}</h3>
+	<h:form id="listUnits">
+
+		<p:messages id="messages" closable="true" />
+
+		<h:panelGrid columns="2">
+			<p:outputLabel value="#{labels['applications.application']}:"
+				for="applicationId" />
+			<p:selectOneMenu id="applicationId" value="#{unitBean.application}"
+				converter="#{applicationConverter}" panelStyle="width:250px"
+				effect="fade" var="applica" style="width:250px" filter="true"
+				filterMatchMode="startsWith">
+
+				<f:selectItem itemLabel="#{labels['global.select.one']}"
+					noSelectionOption="true" />
+
+				<f:selectItems var="app" value="#{applicationBean.applications}"
+					itemLabel="#{app.description}" itemValue="#{app}" />
+
+				<p:column>
+					<p:outputLabel value="#{applica.code}" />
+				</p:column>
+
+				<p:column>
+					<p:outputLabel value="#{applica.description}" />
+				</p:column>
+
+			</p:selectOneMenu>
+
+
+			<p:commandButton icon="ui-icon-search"
+				value="#{labels['global.search']}"
+				actionListener="#{unitBean.searchByApplication}"
+				process="@this applicationId" update="units messages" />
+
+			<p:commandButton value="#{labels['global.clean']}"
+				action="#{unitBean.cleanUnit}" process="@this" update="@form"
+				icon="ui-icon-refresh" />
+
+		</h:panelGrid>
+
+		<p:spacer />
+
+		<p:tabView id="units">
+			<p:tab title="#{labels['units']}">
+
+				<p:dataTable var="unit" value="#{unitBean.units}"
+					emptyMessage="#{labels['global.empty.table']}">
+
+					<p:column headerText="#{labels['global.code']}" width="60">
+						<p:outputLabel value="#{unit.code}" />
+					</p:column>
+
+					<p:column headerText="#{labels['global.name']}">
+						<p:outputLabel value="#{unit.name}" />
+					</p:column>
+
+					<p:column headerText="#{labels['global.email']}">
+						<p:outputLabel value="#{unit.email}" />
+					</p:column>
+
+					<p:column headerText="#{labels['global.contact']}">
+						<p:outputLabel value="#{unit.contact}" />
+					</p:column>
+
+					<p:column width="54">
+
+						<p:commandButton icon="ui-icon-pencil" update=":content"
+							action="#{pageBean.setPage('/unit/create-unit')}">
+							<f:setPropertyActionListener target="#{unitBean.unit}"
+								value="#{unit}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash"
+							action="#{unitBean.removeUnit(unit)}" process="@this"
+							update="@form">
+							<p:confirm icon="ui-icon-alert"
+								header="#{labels['global.remove.confirmation']}"
+								message="#{labels['units.remove.confirmation.question']}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</p:tab>
+
+		</p:tabView>
+	</h:form>
+
+</ui:composition>
