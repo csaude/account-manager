@@ -22,6 +22,6 @@ services:
        links:
          - mysql-account
        volumes: 
-         - /opt/data/webapp:/usr/local/tomcat/webapps
+         - /opt/data/webapp/account:/usr/local/tomcat/webapps
        hostname: tomcat-account
        restart: unless-stopped
