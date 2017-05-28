@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+      						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	   						http://www.springframework.org/schema/context 
+	   						http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	   						http://www.springframework.org/schema/util
+							http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<context:property-placeholder location="classpath:local-test.properties" />
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+
+		<property name="dataSourceClassName" value="${db.dataSourceClassName}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<property name="maximumPoolSize" value="${db.maximumPoolSize}" />
+		<property name="catalog" value="${db.catalog}" />
+
+		<property name="dataSourceProperties">
+			<util:map>
+				<entry key="cachePrepStmts" value="true" />
+				<entry key="prepStmtCacheSize" value="250" />
+				<entry key="prepStmtCacheSqlLimit" value="2048" />
+				<entry key="useServerPrepStmts" value="true" />
+			</util:map>
+		</property>
+	</bean>
+	
+</beans>

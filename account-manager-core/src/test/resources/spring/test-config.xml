@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<import resource="application-context-test.xml" />
+	<import resource="data-source-test.xml" />
+	<import resource="persistence-test.xml" />
+	<import resource="email-sender-test.xml" />
+	<import resource="security-context-test.xml" />
+
+</beans>

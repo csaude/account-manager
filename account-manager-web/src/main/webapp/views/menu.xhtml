@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panelMenu>
+
+			<p:submenu label="#{labels['global.applications']}">
+
+				<p:menuitem value="#{labels['applications.create.application']}"
+					icon="ui-icon-disk"
+					action="#{pageBean.setPage('/application/create-application')}"
+					update=":content" />
+
+				<p:menuitem value="#{labels['applications.list']}"
+					icon="ui-icon-calculator"
+					action="#{pageBean.setPage('/application/list-applications')}"
+					update=":content" />
+
+			</p:submenu>
+
+			<p:submenu label="#{labels['global.roles']}">
+
+				<p:menuitem value="#{labels['roles.create.role']}"
+					icon="ui-icon-disk"
+					action="#{pageBean.setPage('/roles/create-role')}"
+					update=":content" />
+
+				<p:menuitem value="#{labels['roles.list']}"
+					icon="ui-icon-calculator"
+					action="#{pageBean.setPage('/roles/list-roles')}" update=":content" />
+
+			</p:submenu>
+
+			<p:submenu label="#{labels['global.applications.and.roles']}">
+
+				<p:menuitem
+					value="#{labels['applicationroles.link.application.and.role']}"
+					icon="ui-icon-extlink"
+					action="#{pageBean.setPage('/applicationrole/create-application-role')}"
+					update=":content" />
+
+				<p:menuitem value="#{labels['applicationroles.list']}"
+					icon="ui-icon-calculator"
+					action="#{pageBean.setPage('/applicationrole/list-application-roles')}"
+					update=":content" />
+
+			</p:submenu>
+
+			<p:submenu label="#{labels['global.users']}">
+
+				<p:menuitem value="#{labels['users.create.user']}"
+					icon="ui-icon-disk"
+					action="#{pageBean.setPage('/user/create-user')}" update=":content" />
+
+				<p:menuitem value="#{labels['users.list']}"
+					icon="ui-icon-circle-close"
+					action="#{pageBean.setPage('/user/list-users')}" update=":content" />
+
+			</p:submenu>
+
+			<p:submenu label="#{labels['global.users.applications.roles']}">
+
+				<p:menuitem
+					value="#{labels['userapplicationroles.link.user.to.aplication.role']}"
+					icon="ui-icon-extlink"
+					action="#{pageBean.setPage('/userapplicationrole/create-user-application-role')}"
+					update=":content" />
+
+			</p:submenu>
+
+			<p:submenu label="#{labels['transactions']}">
+
+				<p:menuitem value="#{labels['transactions.create']}"
+					icon="ui-icon-disk"
+					action="#{pageBean.setPage('/transaction/create-transaction')}"
+					update=":content" />
+
+				<p:menuitem value="#{labels['transactions.list']}"
+					icon="ui-icon-calculator"
+					action="#{pageBean.setPage('/transaction/list-transactions')}"
+					update=":content" />
+
+			</p:submenu>
+
+			<p:submenu label="#{labels['units']}">
+
+				<p:menuitem value="#{labels['units.regist']}" icon="ui-icon-disk"
+					action="#{pageBean.setPage('/unit/create-unit')}" update=":content" />
+
+				<p:menuitem value="#{labels['units.list']}"
+					icon="ui-icon-calculator"
+					action="#{pageBean.setPage('/unit/list-units')}" update=":content" />
+
+			</p:submenu>
+
+		</p:panelMenu>
+	</h:form>
+
+</ui:composition>

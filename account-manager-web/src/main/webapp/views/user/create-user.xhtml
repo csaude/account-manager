@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['users.create.user']}</h3>
+	<h:form id="createApplication">
+
+		<p:messages id="messages" closable="true" autoUpdate="true" />
+
+		<p:toolbar style="margin-bottom:10px">
+
+			<p:toolbarGroup>
+				<p:commandButton value="#{labels['global.save']}"
+					action="#{userBean.saveUser}" process="@form" update="@form"
+					rendered="#{!userBean.isEdit()}" icon="ui-icon-disk" />
+
+				<p:commandButton value="#{labels['global.update']}"
+					action="#{userBean.updateUser}" process="@form" update="@form"
+					rendered="#{userBean.isEdit()}" icon="ui-icon-pencil" />
+
+				<p:separator rendered="#{!userBean.isEdit()}" />
+
+				<p:commandButton value="#{labels['global.clean']}" type="reset"
+					rendered="#{!auserBean.isEdit()}" icon="ui-icon-refresh" />
+			</p:toolbarGroup>
+
+			<p:toolbarGroup align="right">
+				<p:commandButton value="#{labels['global.cancel']}"
+					action="#{userBean.cleanUser}" process="@this" update="@form"
+					icon="ui-icon-cancel" />
+			</p:toolbarGroup>
+
+		</p:toolbar>
+		<p:fieldset>
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="#{labels['users.full.name']}:" for="fullName" />
+				<p:inputText id="fullName" value="#{userBean.user.fullName}"
+					size="30" required="true"
+					requiredMessage="#{labels['users.full.name.required']}"
+					autocomplete="off" />
+
+				<p:outputLabel value="#{labels['users.email']}:" for="email" />
+				<p:inputText id="email" value="#{userBean.user.email}" size="30"
+					required="true" requiredMessage="#{labels['users.email.required']}"
+					autocomplete="off" />
+
+				<p:outputLabel value="#{labels['users.username']}:" for="username" />
+				<p:inputText id="username" value="#{userBean.user.username}"
+					required="true"
+					requiredMessage="#{labels['users.username.required']}"
+					autocomplete="off" />
+
+				<p:outputLabel value="#{labels['users.password']}:" for="password" />
+				<p:password id="password" value="#{userBean.user.password}"
+					required="true"
+					requiredMessage="#{labels['users.password.required']}" />
+
+			</h:panelGrid>
+		</p:fieldset>
+
+	</h:form>
+
+</ui:composition>

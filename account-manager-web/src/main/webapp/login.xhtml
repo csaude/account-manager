@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<title>Gestão de Accessos - Autentincação</title>
+	<link rel="icon" href="resources/img/acessos.ico" />
+	<link rel="stylesheet" href="resources/css/bootstrap.css"
+		type="text/css" media="all" />
+	<link rel="stylesheet" href="resources/css/bootstrap-theme.css"
+		type="text/css" media="all" />
+	<link rel="stylesheet" href="resources/css/style.css" type="text/css"
+		media="all" />
+
+</h:head>
+<h:body>
+	<div style="margin: 10% 35% auto">
+
+		<div class="text-center">
+			<p:graphicImage library="img" name="login.jpg" height="150px"
+				class="img-rounded" />
+		</div>
+		<div class="panel panel-default" style="border-color: #438eb9">
+
+			<div class="panel-heading" style="border-color: inherit;"
+				align="center">
+				<h3 class="panel-title">Gestão de Acessos</h3>
+			</div>
+
+			<div style="padding-top: 30px" class="panel-body">
+				<h:form id="loginForm" class="form-horizontal">
+
+					<p:messages id="loginAlertMessage" closable="true"
+						autoUpdate="true" />
+
+					<div style="margin-bottom: 25px" class="input-group">
+
+						<span class="input-group-addon"><i
+							class="glyphicon glyphicon-user"></i></span>
+						<h:inputText type="text" id="username" class="form-control"
+							a:placeholder="Utilizador" required="true"
+							requiredMessage="Nome de Utilizador é obrigatório"
+							autofocus="autofocus" value="#{loginBean.userName}"
+							autocomplete="off" />
+					</div>
+
+					<div style="margin-bottom: 25px" class="input-group">
+
+						<span class="input-group-addon"><i
+							class="glyphicon glyphicon-lock"></i></span>
+						<h:inputSecret type="text" id="password" class="form-control"
+							a:placeholder="Senha" required="true" autofocus="autofocus"
+							requiredMessage="Senha é Obrigatória"
+							value="#{loginBean.password}" autocomplete="off" />
+
+					</div>
+
+					<p:commandButton id="loginBtn"
+						class="btn btn-lg btn-primary btn-block" value="Entrar"
+						style="height: 50px" action="#{loginBean.login}"
+						update="loginAlertMessage" />
+
+				</h:form>
+
+			</div>
+		</div>
+	</div>
+
+</h:body>
+</html>

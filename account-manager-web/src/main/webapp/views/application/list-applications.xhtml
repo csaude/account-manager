@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['applications.list']}</h3>
+	<h:form id="listApplications">
+
+		<p:messages id="messages" closable="true" />
+
+		<p:tabView>
+			<p:tab title="#{labels['global.applications']}">
+
+				<p:dataTable var="app" value="#{applicationBean.applications}"
+					emptyMessage="#{labels['global.empty.table']}">
+
+					<p:column headerText="#{labels['applications.code']}" width="80">
+						<p:outputLabel value="#{app.code}" />
+					</p:column>
+
+					<p:column headerText="#{labels['applications.description']}">
+						<p:outputLabel value="#{app.description}" />
+					</p:column>
+
+					<p:column headerText="#{labels['applications.context.name']}">
+						<p:outputLabel value="#{app.contextName}" />
+					</p:column>
+
+					<p:column width="54">
+
+						<p:commandButton icon="ui-icon-pencil" update=":content"
+							action="#{pageBean.setPage('/application/create-application')}">
+							<f:setPropertyActionListener
+								target="#{applicationBean.application}" value="#{app}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash"
+							action="#{applicationBean.removeApplication(app)}"
+							process="@this" update="@form">
+							<p:confirm icon="ui-icon-alert"
+								header="#{labels['global.remove.confirmation']}"
+								message="#{labels['applications.remove.confirmation.question']}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</p:tab>
+
+		</p:tabView>
+	</h:form>
+
+</ui:composition>
