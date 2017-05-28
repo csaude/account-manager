@@ -1,0 +1,26 @@
+*.class
+.~*
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+.project
+.settings
+.classpath
+account-manager-core/target
+account-manager-core/.project
+account-manager-core/.settings/
+account-manager-core/.classpath
+account-manager-web/target
+account-manager-web/.project
+account-manager-web/.settings/
+account-manager-web/.classpath
+account-manager-web/.metadata/
+tomcat/*.war

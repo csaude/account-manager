@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['applicationroles.application.and.role']}</h3>
+	<h:form id="createApplicationRole">
+
+		<p:messages id="messages" closable="true" autoUpdate="true" />
+
+		<p:toolbar style="margin-bottom:10px">
+
+			<p:toolbarGroup>
+				<p:commandButton value="#{labels['global.save']}"
+					action="#{applicationRoleBean.saveApplicationRole}" process="@form"
+					update="@form" rendered="#{!applicationRoleBean.isEdit()}"
+					icon="ui-icon-disk" />
+
+				<p:commandButton value="#{labels['global.update']}"
+					action="#{applicationRoleBean.updateApplicationRole}"
+					process="@form" update="@form"
+					rendered="#{applicationRoleBean.isEdit()}" icon="ui-icon-pencil" />
+
+				<p:separator rendered="#{!applicationRoleBean.isEdit()}" />
+
+				<p:commandButton value="#{labels['global.clean']}" type="reset"
+					rendered="#{!applicationRoleBean.isEdit()}" icon="ui-icon-refresh" />
+			</p:toolbarGroup>
+
+			<p:toolbarGroup align="right">
+				<p:commandButton value="#{labels['global.cancel']}"
+					action="#{applicationRoleBean.cleanApplicationRole}"
+					process="@this" update="@form" icon="ui-icon-cancel" />
+			</p:toolbarGroup>
+
+		</p:toolbar>
+		<p:fieldset>
+			<h:panelGrid columns="4">
+
+				<p:outputLabel value="#{labels['applications.application']}:"
+					for="applicationId" />
+				<p:selectOneMenu id="applicationId"
+					value="#{applicationRoleBean.application}"
+					converter="#{applicationConverter}" required="true"
+					requiredMessage="#{labels['applicationroles.application.required']}"
+					panelStyle="width:250px" effect="fade" var="applica"
+					style="width:250px" filter="true" filterMatchMode="startsWith">
+
+					<p:ajax event="change" process="@this" update="transactions" />
+
+					<f:selectItem itemLabel="#{labels['global.select.one']}"
+						noSelectionOption="true" />
+
+					<f:selectItems var="app" value="#{applicationBean.applications}"
+						itemLabel="#{app.description}" itemValue="#{app}" />
+
+					<p:column>
+						<p:outputLabel value="#{applica.code}" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel value="#{applica.description}" />
+					</p:column>
+
+				</p:selectOneMenu>
+
+				<p:outputLabel value="#{labels['roles.role']}:" for="roleId" />
+				<p:selectOneMenu id="roleId" value="#{applicationRoleBean.role}"
+					converter="#{roleConverter}" required="true"
+					requiredMessage="#{labels['applicationroles.role.required']}"
+					panelStyle="width:180px" effect="fade" var="role"
+					style="width:250px" filter="true" filterMatchMode="startsWith">
+
+					<f:selectItem itemLabel="#{labels['global.select.one']}"
+						noSelectionOption="true" />
+
+					<f:selectItems var="role" value="#{applicationRoleBean.roles}"
+						itemLabel="#{role.name}" itemValue="#{role}" />
+
+					<p:column>
+						<p:outputLabel value="#{role.name}" />
+					</p:column>
+
+				</p:selectOneMenu>
+
+				<p:outputLabel value="#{labels['transactions']}:" for="transactions" />
+				<p:selectManyMenu id="transactions"
+					value="#{applicationRoleBean.applicationRole.transactions}"
+					converter="#{transactionConverter}" panelStyle="width:250px"
+					effect="fade" var="transaction" style="width:98%" filter="true"
+					filterMatchMode="startsWith" showCheckbox="true">
+
+					<f:selectItems var="trans"
+						value="#{applicationRoleBean.transactions}"
+						itemLabel="#{trans.name}" itemValue="#{trans}" />
+
+					<p:column>
+						<p:outputLabel value="#{transaction.name}" />
+					</p:column>
+
+				</p:selectManyMenu>
+
+			</h:panelGrid>
+		</p:fieldset>
+
+	</h:form>
+
+</ui:composition>

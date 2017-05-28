@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['units.regist']}</h3>
+	<h:form id="createUnit">
+
+		<p:messages id="messages" closable="true" autoUpdate="true" />
+
+		<p:toolbar style="margin-bottom:10px">
+
+			<p:toolbarGroup>
+				<p:commandButton value="#{labels['global.save']}"
+					action="#{unitBean.saveUnit}" process="@form" update="@form"
+					rendered="#{!unitBean.isEdit()}" icon="ui-icon-disk" />
+
+				<p:commandButton value="#{labels['global.update']}"
+					action="#{unitBean.updateUnit}" process="@form" update="@form"
+					rendered="#{unitBean.isEdit()}" icon="ui-icon-pencil" />
+
+				<p:separator rendered="#{!unitBean.isEdit()}" />
+
+				<p:commandButton value="#{labels['global.clean']}" type="reset"
+					rendered="#{!unitBean.isEdit()}" icon="ui-icon-refresh" />
+			</p:toolbarGroup>
+
+			<p:toolbarGroup align="right">
+				<p:commandButton value="#{labels['global.cancel']}"
+					action="#{unitBean.cleanUnit}" process="@this" update="@form"
+					icon="ui-icon-cancel" />
+			</p:toolbarGroup>
+
+		</p:toolbar>
+		<p:fieldset>
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="#{labels['global.nuit']}:" for="nuit" />
+				<p:inputText id="nuit" autocomplete="off" size="30"
+					value="#{unitBean.unit.nuit}" />
+
+				<p:outputLabel value="#{labels['global.name']}:" for="unitName" />
+				<p:inputText id="unitName" autocomplete="off" size="50"
+					value="#{unitBean.unit.name}" />
+
+				<p:outputLabel value="#{labels['global.email']}:" for="unitEmail" />
+				<p:inputText id="unitEmail" autocomplete="off" size="50"
+					value="#{unitBean.unit.email}" />
+
+				<p:outputLabel value="#{labels['global.contact']}:"
+					for="unitContact" />
+				<p:inputText id="unitContact" autocomplete="off" size="50"
+					value="#{unitBean.unit.contact}" />
+
+				<p:outputLabel value="#{labels['global.address']}:"
+					for="unitAddress" />
+				<p:inputTextarea id="unitAddress" cols="50" rows="3"
+					value="#{unitBean.unit.address}" />
+
+				<p:outputLabel value="#{labels['global.applications']}:"
+					for="applications" />
+				<p:selectManyMenu id="applications"
+					value="#{unitBean.unit.applications}"
+					converter="#{applicationConverter}" panelStyle="width:250px"
+					effect="fade" var="applica" style="width:98%" filter="true"
+					filterMatchMode="startsWith" showCheckbox="true">
+
+					<f:selectItems var="app" value="#{applicationBean.applications}"
+						itemLabel="#{app.description}" itemValue="#{app}" />
+
+					<p:column>
+						<p:outputLabel value="#{applica.description}" />
+					</p:column>
+
+				</p:selectManyMenu>
+			</h:panelGrid>
+		</p:fieldset>
+
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>#{labels['choose.application.page.title']}</title>
+</h:head>
+
+<h:body>
+	<h:outputStylesheet name="css/style.css" />
+
+	<h:form id="chooseApplication" style="margin-top:13%;" prependId="false">
+		<p:panel style="width:420px; margin: auto auto; border:none;">
+
+			<p:messages id="messages" closable="true" />
+
+			<h:panelGrid columns="2">
+				<p:graphicImage library="img" name="acessos.jpg" height="150px" />
+				<h2
+					style="margin: auto auto; text-align: center; margin-bottom: 10px;">#{labels['choose.application.title']}</h2>
+				<p:outputLabel
+					value="#{labels['choose.application.available.applications']}"
+					rendered="#{!chooseApplicationBean.applications.isEmpty()}"
+					for="applicationsList" />
+
+				<p:selectOneMenu style="width:230px" panelStyle="width:230px"
+					id="applicationsList" required="true"
+					converter="#{applicationConverter}"
+					value="#{chooseApplicationBean.application}" var="theApp"
+					requiredMessage="#{labels['choose.application.required']}"
+					rendered="#{!chooseApplicationBean.applications.isEmpty()}">
+
+					<f:selectItem itemLabel="#{labels['global.select.one']}"
+						noSelectionOption="true" />
+
+					<f:selectItems var="app"
+						value="#{chooseApplicationBean.applications}"
+						itemLabel="#{app.description}" itemValue="#{app}" />
+
+					<p:column>
+						<p:outputLabel value="#{theApp.description}" />
+					</p:column>
+
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+			<p:outputLabel
+				value="O(A) utilizador(a): #{loginBean.getUserContext().username} não tem acesso a nenhuma aplicação."
+				rendered="#{chooseApplicationBean.applications.isEmpty()}"
+				style="color:red" />
+
+			<p:separator />
+
+			<p:commandButton value="#{labels['global.continue']}"
+				action="#{chooseApplicationBean.continueToApplication}"
+				icon="ui-icon-circle-triangle-e" update="chooseApplication"
+				rendered="#{!chooseApplicationBean.applications.isEmpty()}" id="continueBtn"/>
+
+			<p:spacer width="10"
+				rendered="#{!chooseApplicationBean.applications.isEmpty()}" />
+
+			<p:commandButton value="#{labels['global.logout']}"
+				icon="ui-icon-power" action="#{loginBean.logout}" process="@this" />
+
+		</p:panel>
+
+	</h:form>
+</h:body>
+
+</html>

@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['transactions.create']}</h3>
+	<h:form id="createTransaction">
+
+		<p:messages id="messages" closable="true" autoUpdate="true" />
+
+		<p:toolbar style="margin-bottom:10px">
+
+			<p:toolbarGroup>
+				<p:commandButton value="#{labels['global.save']}"
+					action="#{transactionBean.saveTransaction}" process="@form"
+					update="@form" rendered="#{!transactionBean.isEdit()}"
+					icon="ui-icon-disk" />
+
+				<p:commandButton value="#{labels['global.update']}"
+					action="#{transactionBean.updateTransaction}" process="@form"
+					update="@form" rendered="#{transactionBean.isEdit()}"
+					icon="ui-icon-pencil" />
+
+				<p:separator rendered="#{!transactionBean.isEdit()}" />
+
+				<p:commandButton value="#{labels['global.clean']}" type="reset"
+					rendered="#{!transactionBean.isEdit()}" icon="ui-icon-refresh" />
+			</p:toolbarGroup>
+
+			<p:toolbarGroup align="right">
+				<p:commandButton value="#{labels['global.cancel']}"
+					action="#{transactionBean.cleanTransaction}" process="@this"
+					update="@form" icon="ui-icon-cancel" />
+			</p:toolbarGroup>
+
+		</p:toolbar>
+		<p:fieldset>
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="#{labels['global.code']}:"
+					for="transactionCode" />
+				<p:inputText id="transactionCode" autocomplete="off" size="10"
+					value="#{transactionBean.transaction.code}" maxlength="5" />
+
+				<p:outputLabel value="#{labels['global.name']}:"
+					for="transactionName" />
+				<p:inputText id="transactionName" autocomplete="off" size="43"
+					value="#{transactionBean.transaction.name}" />
+
+				<p:outputLabel value="#{labels['applications.application']}:"
+					for="applicationId" />
+				<p:selectOneMenu id="applicationId"
+					value="#{transactionBean.transaction.application}"
+					converter="#{applicationConverter}" panelStyle="width:250px"
+					effect="fade" var="applica" style="width:100%" filter="true"
+					filterMatchMode="startsWith">
+
+					<f:selectItem itemLabel="#{labels['global.select.one']}"
+						noSelectionOption="true" />
+
+					<f:selectItems var="app" value="#{applicationBean.applications}"
+						itemLabel="#{app.description}" itemValue="#{app}" />
+
+					<p:column>
+						<p:outputLabel value="#{applica.code}" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel value="#{applica.description}" />
+					</p:column>
+
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+		</p:fieldset>
+
+	</h:form>
+
+</ui:composition>

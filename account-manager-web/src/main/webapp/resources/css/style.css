@@ -1,0 +1,90 @@
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 90%;
+}
+
+.ui-panelmenu-header {
+	font-size: 100%;
+}
+
+#footer {
+	margin: 5px auto;
+	text-align: center;
+	font-size: 10pt;
+	font-style: italic;
+	color: #2F556A;
+}
+
+h2 {
+	text-shadow: 0px 10px 0.3px rgba(1, 1, 1, 0.1);
+	padding: 0px 10px;
+	font-size: 15pt;
+	font-weight: bold;
+	color: #2F556A;
+}
+
+h3 {
+	text-shadow: 0px 10px 0.3px rgba(1, 1, 1, 0.1);
+	padding: 0px 10px;
+	margin-left: -8px;
+	font-size: 12pt;
+	font-weight: bold;
+	color: #2F556A;
+	margin-bottom: 20px;
+}
+
+#login {
+	
+}
+
+.ajax-status {
+	position: fixed;
+	right: 20px;
+	top: 100px;
+}
+
+/* Customiza TabView - início */
+.ui-tabs .ui-tabs-panel {
+	padding: 0.5em 0.2em !important;
+}
+
+.ui-tabs {
+	padding: 0px !important;
+}
+
+.ui-tabs .ui-tabs-nav {
+	margin: -1px !important;
+}
+
+.ui-tabs.ui-tabs-top>.ui-tabs-nav {
+	padding: 0px !important;
+}
+
+/* simbolo de asterisco invesivel na validação do campo*/
+.ui-outputlabel-rfi {
+	display: none;
+}
+
+.helloUser {
+	text-shadow: 0px 10px 0.3px rgba(1, 1, 1, 0.1);
+	padding: 0px 10px;
+	font-size: 12pt;
+	font-weight: bold;
+	color: #2F556A;
+}
+
+.loginFormBody {
+	border-radius: 5px;
+	border-bottom: 1px solid #438eb9;
+	border-right: 1px solid #438eb9;
+	border-left: 1px solid #438eb9;
+	border-top: 1px solid #438eb9;
+	width: 25%;
+	height: 300px;
+	margin: 15% auto 25% auto;
+}
+
+.loginTitle {
+	background: #438eb9;
+	border-bottom: 1px solid #438eb9;
+	margin: 10% auto;
+}

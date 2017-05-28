@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h3>#{labels['roles.list']}</h3>
+	<h:form id="listRoles">
+
+		<p:messages id="messages" closable="true" />
+
+		<p:tabView>
+			<p:tab title="#{labels['global.roles']}">
+
+				<p:dataTable var="role" value="#{roleBean.roles}"
+					emptyMessage="#{labels['global.empty.table']}">
+
+					<p:column headerText="#{labels['roles.role']}" width="100">
+						<p:outputLabel value="#{role.name}" />
+					</p:column>
+
+					<p:column headerText="#{labels['global.description']}">
+						<p:outputLabel value="#{role.description}" />
+					</p:column>
+
+					<p:column width="60">
+
+						<p:commandButton icon="ui-icon-pencil" update=":content"
+							action="#{pageBean.setPage('/roles/create-role')}">
+							<f:setPropertyActionListener
+								target="#{roleBean.role}" value="#{role}" />
+						</p:commandButton>
+						<p:spacer width="5"/>
+						<p:commandButton icon="ui-icon-trash"
+							action="#{roleBean.removeRole(role)}"
+							process="@this" update="@form">
+							<p:confirm icon="ui-icon-alert"
+								header="#{labels['global.remove.confirmation']}"
+								message="#{labels['roles.remove.confirmation.question']}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</p:tab>
+
+		</p:tabView>
+	</h:form>
+</ui:composition>
