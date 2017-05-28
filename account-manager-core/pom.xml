@@ -228,9 +228,9 @@
 					<artifactId>flyway-maven-plugin</artifactId>
 					<version>3.2.1</version>
 					<configuration>
-						<url>jdbc:mysql://localhost/accountmanager?autoReconnect=true</url>
+						<url>jdbc:mysql://localhost:3308/accountmanager?autoReconnect=true</url>
 						<user>root</user>
-						<password></password>
+						<password>root</password>
 					</configuration>
 				</plugin>
 			</plugins>
