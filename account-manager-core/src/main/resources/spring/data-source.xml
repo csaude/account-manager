@@ -24,6 +24,7 @@
 
 		<property name="dataSourceProperties">
 			<util:map>
+				<entry key="url" value="${db.url}" />
 				<entry key="cachePrepStmts" value="true" />
 				<entry key="prepStmtCacheSize" value="250" />
 				<entry key="prepStmtCacheSqlLimit" value="2048" />
