@@ -18,46 +18,35 @@ import mz.co.mozview.frameworks.core.webservices.model.UserContext;
  * @author Stélio Moiane
  *
  */
-public class UserContextFactory
-{
+public class UserContextFactory {
 	private static Application application;
-	
-	public static UserContext getUserContext(final User user,
-			final Application appplication, final Unit unit)
-	{
+
+	public static UserContext getUserContext(final User user, final Application appplication, final Unit unit) {
 		UserContext userContext = getUsercoContext(user, appplication);
-		userContext
-				.setUnit(new mz.co.mozview.frameworks.core.webservices.model.UnitWS(
-						unit.getCode(), unit.getNuit(), unit.getName(), unit
-								.getAddress(), unit.getContact(), unit
-								.getEmail()));
-		
+		userContext.setUnit(new mz.co.mozview.frameworks.core.webservices.model.UnitWS(unit.getCode(), unit.getNuit(),
+				unit.getName(), unit.getAddress(), unit.getContact(), unit.getEmail()));
+
 		return userContext;
 	}
-	
-	public static UserContext getUsercoContext(final User user,
-			final Application application)
-	{
+
+	public static UserContext getUsercoContext(final User user, final Application application) {
 		UserContextFactory.application = application;
-		
+
 		UserContext userContext = UserContextFactory.getUsercoContext(user);
-		
+
 		Role role = getRole(user.getAuthorities());
-		userContext
-				.setRole(new mz.co.mozview.frameworks.core.webservices.model.Role(
-						role.getName(), role.getDescription()));
-		
+		userContext.setRole(
+				new mz.co.mozview.frameworks.core.webservices.model.Role(role.getName(), role.getDescription()));
+
 		userContext.setTransactionCodes(getTransactionCodes(user, application));
-		
+
 		return userContext;
 	}
-	
-	public static UserContext getUsercoContext(final User user)
-	{
+
+	public static UserContext getUsercoContext(final User user) {
 		UserContext userContext = new UserContext();
-		Application application = user.getAuthorities().iterator().next()
-				.getApplicationRole().getApplication();
-		
+		Application application = user.getAuthorities().iterator().next().getApplicationRole().getApplication();
+
 		userContext.setId(user.getId());
 		userContext.setFullName(user.getFullName());
 		userContext.setUsername(user.getUsername());
@@ -66,82 +55,61 @@ public class UserContextFactory
 		userContext.setAccountNonLocked(user.isAccountNonLocked());
 		userContext.setCredentialsNonExpired(user.isCredentialsNonExpired());
 		userContext.setEnabled(user.isEnabled());
-		
-		Role role = user.getAuthorities().iterator().next()
-				.getApplicationRole().getRole();
-		userContext
-				.setRole(new mz.co.mozview.frameworks.core.webservices.model.Role(
-						role.getName(), role.getDescription()));
-		
+		userContext.setUuid(user.getUuid());
+
+		Role role = user.getAuthorities().iterator().next().getApplicationRole().getRole();
+		userContext.setRole(
+				new mz.co.mozview.frameworks.core.webservices.model.Role(role.getName(), role.getDescription()));
+
 		userContext.setTransactionCodes(getTransactionCodes(user, application));
-		
+
 		Unit unit = getUnit(user);
-		
-		userContext
-				.setUnit(new mz.co.mozview.frameworks.core.webservices.model.UnitWS(
-						unit.getCode(), unit.getNuit(), unit.getName(), unit
-								.getAddress(), unit.getContact(), unit
-								.getEmail()));
-		
+
+		userContext.setUnit(new mz.co.mozview.frameworks.core.webservices.model.UnitWS(unit.getCode(), unit.getNuit(),
+				unit.getName(), unit.getAddress(), unit.getContact(), unit.getEmail()));
+
 		userContext.setSessionId(getSessionId(userContext, application));
-		
+
 		return userContext;
 	}
-	
-	private static Unit getUnit(final User user)
-	{
-		for (UserApplicationRole userApplicationRole : user.getAuthorities())
-		{
+
+	private static Unit getUnit(final User user) {
+		for (UserApplicationRole userApplicationRole : user.getAuthorities()) {
 			return userApplicationRole.getUnits().iterator().next();
 		}
-		
+
 		return null;
 	}
-	
-	private static List<String> getTransactionCodes(final User user,
-			final Application application)
-	{
+
+	private static List<String> getTransactionCodes(final User user, final Application application) {
 		List<String> transactionCodes = new ArrayList<>();
-		
-		for (UserApplicationRole userApplicationRole : user.getAuthorities())
-		{
-			if (application.equals(userApplicationRole.getApplicationRole()
-					.getApplication()))
-			{
-				for (Transaction transaction : userApplicationRole
-						.getApplicationRole().getTransactions())
-				{
+
+		for (UserApplicationRole userApplicationRole : user.getAuthorities()) {
+			if (application.equals(userApplicationRole.getApplicationRole().getApplication())) {
+				for (Transaction transaction : userApplicationRole.getApplicationRole().getTransactions()) {
 					transactionCodes.add(transaction.getCode());
 				}
 			}
 		}
-		
+
 		return transactionCodes;
 	}
-	
-	private static Role getRole(
-			final Collection<UserApplicationRole> authorities)
-	{
-		for (UserApplicationRole userApplicationRole : authorities)
-		{
-			if (application.equals(userApplicationRole.getApplicationRole()
-					.getApplication()))
-			{
+
+	private static Role getRole(final Collection<UserApplicationRole> authorities) {
+		for (UserApplicationRole userApplicationRole : authorities) {
+			if (application.equals(userApplicationRole.getApplicationRole().getApplication())) {
 				return userApplicationRole.getApplicationRole().getRole();
 			}
 		}
-		
+
 		return null;
 	}
-	
-	private static String getSessionId(final UserContext userContext,
-			final Application application)
-	{
+
+	private static String getSessionId(final UserContext userContext, final Application application) {
 		StringBuilder sessionId = new StringBuilder();
-		sessionId.append(application.getCode())
-				.append(userContext.getUnit().getCode())
+		sessionId.append(application.getCode()).append(userContext.getUnit().getCode())
 				.append(userContext.getUsername());
-		
+
 		return sessionId.toString();
 	}
 }
