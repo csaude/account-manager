@@ -33,7 +33,7 @@ else
   /usr/bin/mysqld --user=root --bootstrap --verbose=0 < "$tfile"
   rm -f "$tfile"
 
-  # cat mentoring.sql | mysql_embedded -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"
+  cat accountmanager.sql | mysql_embedded -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"
   
 fi
 

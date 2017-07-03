@@ -9,6 +9,7 @@ ENV MYSQL_DATA_DIRECTORY=/opt/data/system/mysql
 ADD account-mysql.cnf /root/.my.cnf
 ADD backup /usr/bin/backup
 ADD localtime /etc/localtime
+ADD accountmanager.sql /accountmanager.sql
 
 RUN apk add --update mariadb mariadb-client; \
     rm /usr/bin/mysql_client_test_embedded; \
