@@ -17,6 +17,7 @@ import mz.co.geekframeworks.core.security.AuthenticationService;
 import mz.co.geekframeworks.core.user.model.User;
 import mz.co.geekframeworks.core.user.model.UserContextFactory;
 import mz.co.geekframeworks.core.user.service.UserQueryService;
+import mz.co.geekframeworks.core.user.service.UserService;
 import mz.co.geekframeworks.core.util.UserContextUtil;
 import mz.co.mozview.frameworks.core.exception.BusinessException;
 import mz.co.mozview.frameworks.core.webservices.model.UserContext;
@@ -28,8 +29,12 @@ import mz.co.mozview.frameworks.core.webservices.model.UserContext;
 @Service(UserWebService.NAME)
 @Path("users")
 public class UserWebServiceImpl implements UserWebService {
+
 	@Inject
 	private UserQueryService userQueryService;
+
+	@Inject
+	private UserService userService;
 
 	@Inject
 	private AuthenticationService authenticationService;
@@ -52,26 +57,14 @@ public class UserWebServiceImpl implements UserWebService {
 	}
 
 	@Override
-	public Response updatePassWord(final mz.co.mozview.frameworks.core.webservices.model.UserContext userContext)
-			throws BusinessException {
-		// User user = this.userQueryService.findUserBySessionId(userContext
-		// .getSessionId());
-		//
-		// if (!user.getPassword().equals(userContext.getOldPassword()))
-		// {
-		// return Response.notModified().build();
-		// }
-		//
-		// user.setPassword(userContext.getNewPassword());
-		//
-		// this.userService.updateUser(userContext.getId(), user);
-		//
-		// userContext.setNewPassword(user.getPassword());
-		// userContext.setOldPassword(null);
-		//
-		// return Response.ok(userContext).build();
+	public JResponse<UserContext> updatePassword(final UserContext userContext) throws BusinessException {
 
-		return null;
+		User user = this.userQueryService.findUserByUuid(userContext.getUuid());
+		user.setPassword(userContext.getPassword());
+
+		this.userService.updateUserPassword(userContext, user);
+
+		return JResponse.ok(userContext).build();
 	}
 
 	@Override

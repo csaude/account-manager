@@ -22,25 +22,21 @@ import mz.co.mozview.frameworks.core.webservices.model.UserContext;
  * @author Stélio Moiane
  *
  */
-public interface UserWebService
-{
+public interface UserWebService {
 	public static final String NAME = "mz_co_geekframeworks_core_user_webservice.UserWebService";
-	
+
 	@GET
 	@Path("{sessionId}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response findUserBySessionId(
-			@PathParam("sessionId") final String sessionId)
-			throws BusinessException;
-	
+	public Response findUserBySessionId(@PathParam("sessionId") final String sessionId) throws BusinessException;
+
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public JResponse<UserContext> login(final UserContext userContext)
-			throws BusinessException;
-	
+	public JResponse<UserContext> login(final UserContext userContext) throws BusinessException;
+
 	@PUT
 	@Path("update")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response updatePassWord(final UserContext userContext)
-			throws BusinessException;
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public JResponse<UserContext> updatePassword(final UserContext userContext) throws BusinessException;
 }
