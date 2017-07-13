@@ -2,11 +2,8 @@ package mz.co.geekframeworks.core.user;
 
 import static org.junit.Assert.assertNull;
 
-import java.util.Collection;
-
 import javax.inject.Inject;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,7 +12,6 @@ import mz.co.geekframeworks.core.framework.test.AbstractSpringContextTests;
 import mz.co.geekframeworks.core.framework.test.util.TestUtils;
 import mz.co.geekframeworks.core.user.dao.UserDAO;
 import mz.co.geekframeworks.core.user.model.User;
-import mz.co.geekframeworks.core.user.service.UserQueryService;
 import mz.co.geekframeworks.core.user.service.UserService;
 import mz.co.mozview.frameworks.core.exception.BusinessException;
 import mz.co.mozview.frameworks.core.fixtureFactory.EntityFactory;
@@ -31,9 +27,6 @@ public class UserServiceImplTest extends AbstractSpringContextTests {
 
 	@Inject
 	private UserDAO userDAO;
-
-	@Inject
-	private UserQueryService userQueryService;
 
 	@Inject
 	private PasswordEncoder passwordEncoder;
@@ -76,13 +69,16 @@ public class UserServiceImplTest extends AbstractSpringContextTests {
 	}
 
 	@Test
-	@Ignore
-	public void shouldUpdateAllPasswords() throws BusinessException {
-		Collection<User> allUsers = this.userQueryService.findAllUsers(this.getUserContext());
+	public void shouldUpdateUserPassword() throws BusinessException {
 
-		for (User user : allUsers) {
-			user.setPassword("stelioklesio");
-			this.userService.updateUser(this.getUserContext(), user);
-		}
+		User createdUser = this.userService.createUser(this.getUserContext(), this.user);
+
+		String newPassword = "stelio";
+
+		createdUser.setPassword(newPassword);
+
+		this.userService.updateUserPassword(this.getUserContext(), createdUser);
+
+		TestUtils.assertUpdate(createdUser);
 	}
 }
