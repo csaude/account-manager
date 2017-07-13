@@ -35,12 +35,17 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
 	@Override
 	public User updateUser(final UserContext userContext, final User user) throws BusinessException {
-		// user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 		return this.userDAO.update(userContext.getUuid(), user);
 	}
 
 	@Override
 	public void deleteUser(final UserContext userContext, final User user) throws BusinessException {
 		this.userDAO.delete(userContext.getUuid(), user);
+	}
+
+	@Override
+	public User updateUserPassword(final UserContext userContext, final User user) throws BusinessException {
+		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+		return this.userDAO.update(userContext.getUuid(), user);
 	}
 }
