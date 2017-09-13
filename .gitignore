@@ -28,3 +28,5 @@ account-manager-web/.settings/
 account-manager-web/.classpath
 account-manager-web/.metadata/
 tomcat/*.war
+
+.DS_Store

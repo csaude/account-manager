@@ -19,6 +19,7 @@ import mz.co.geekframeworks.core.user.model.UserContextFactory;
 import mz.co.geekframeworks.core.user.service.UserQueryService;
 import mz.co.geekframeworks.core.user.service.UserService;
 import mz.co.geekframeworks.core.util.UserContextUtil;
+import mz.co.mozview.frameworks.core.email.MailSenderService;
 import mz.co.mozview.frameworks.core.exception.BusinessException;
 import mz.co.mozview.frameworks.core.webservices.model.UserContext;
 
@@ -39,17 +40,21 @@ public class UserWebServiceImpl implements UserWebService {
 	@Inject
 	private AuthenticationService authenticationService;
 
+	@Inject
+	private MailSenderService mailSenderService;
+
 	@Override
 	public Response findUserBySessionId(final String sessionId) throws BusinessException {
 		UserContext userContext = new UserContext();
 
 		try {
-			User user = this.userQueryService.fetchUserByApplicationCodeAndUnitCodeAndUsername(userContext,
-					UserContextUtil.getApplicationCode(sessionId), UserContextUtil.getUnitCode(sessionId),
-					UserContextUtil.getUsername(sessionId));
+			final User user = this.userQueryService.fetchUserByApplicationCodeAndUnitCodeAndUsername(userContext,
+			        UserContextUtil.getApplicationCode(sessionId), UserContextUtil.getUnitCode(sessionId),
+			        UserContextUtil.getUsername(sessionId));
 
 			userContext = UserContextFactory.getUsercoContext(user);
-		} catch (NoResultException e) {
+		}
+		catch (final NoResultException e) {
 			return Response.noContent().build();
 		}
 
@@ -59,7 +64,7 @@ public class UserWebServiceImpl implements UserWebService {
 	@Override
 	public JResponse<UserContext> updatePassword(final UserContext userContext) throws BusinessException {
 
-		User user = this.userQueryService.findUserByUuid(userContext.getUuid());
+		final User user = this.userQueryService.findUserByUuid(userContext.getUuid());
 		user.setPassword(userContext.getPassword());
 
 		this.userService.updateUserPassword(userContext, user);
@@ -70,12 +75,12 @@ public class UserWebServiceImpl implements UserWebService {
 	@Override
 	public JResponse<UserContext> login(final UserContext userContext) throws BusinessException {
 
-		UserContext context = new UserContext();
+		final UserContext context = new UserContext();
 
-		Authentication authentication = this.authenticationService.getAuthentication(userContext.getUsername(),
-				userContext.getPassword());
+		final Authentication authentication = this.authenticationService.getAuthentication(userContext.getUsername(),
+		        userContext.getPassword());
 
-		User authenticated = (User) authentication.getPrincipal();
+		final User authenticated = (User) authentication.getPrincipal();
 
 		context.setUsername(authenticated.getUsername());
 		context.setFullName(authenticated.getFullName());
@@ -88,5 +93,19 @@ public class UserWebServiceImpl implements UserWebService {
 		context.setUuid(authenticated.getUuid());
 
 		return JResponse.ok(context).build();
+	}
+
+	@Override
+	public JResponse<User> createUser(final UserContext context) throws BusinessException {
+
+		final User user = new User();
+		user.setFullName(context.getFullName());
+		user.setEmail(context.getEmail());
+		user.setUsername(context.getUsername());
+		user.setPassword(context.getPassword());
+
+		this.userService.createUser(context, user);
+
+		return JResponse.ok(user).build();
 	}
 }
