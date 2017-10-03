@@ -28,8 +28,9 @@
 				<entry key="prepStmtCacheSize" value="250" />
 				<entry key="prepStmtCacheSqlLimit" value="2048" />
 				<entry key="useServerPrepStmts" value="true" />
+				<entry key="url" value="${db.url}" />
 			</util:map>
 		</property>
 	</bean>
-	
+
 </beans>
