@@ -19,8 +19,8 @@ import mz.co.geekframeworks.core.user.model.UserContextFactory;
 import mz.co.geekframeworks.core.user.service.UserQueryService;
 import mz.co.geekframeworks.core.user.service.UserService;
 import mz.co.geekframeworks.core.util.UserContextUtil;
-import mz.co.mozview.frameworks.core.email.MailSenderService;
 import mz.co.mozview.frameworks.core.exception.BusinessException;
+import mz.co.mozview.frameworks.core.webservices.adapter.Entry;
 import mz.co.mozview.frameworks.core.webservices.model.UserContext;
 
 /**
@@ -39,9 +39,6 @@ public class UserWebServiceImpl implements UserWebService {
 
 	@Inject
 	private AuthenticationService authenticationService;
-
-	@Inject
-	private MailSenderService mailSenderService;
 
 	@Override
 	public Response findUserBySessionId(final String sessionId) throws BusinessException {
@@ -103,6 +100,7 @@ public class UserWebServiceImpl implements UserWebService {
 		user.setEmail(context.getEmail());
 		user.setUsername(context.getUsername());
 		user.setPassword(context.getPassword());
+		user.setUuid(context.getPropertyValue(Entry.UUID));
 
 		this.userService.createUser(context, user);
 
