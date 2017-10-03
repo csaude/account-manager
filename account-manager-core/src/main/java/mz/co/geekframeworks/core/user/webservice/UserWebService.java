@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.JResponse;
 
+import mz.co.geekframeworks.core.user.model.User;
 import mz.co.mozview.frameworks.core.exception.BusinessException;
 import mz.co.mozview.frameworks.core.webservices.model.UserContext;
 
@@ -32,6 +33,7 @@ public interface UserWebService {
 
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public JResponse<UserContext> login(final UserContext userContext) throws BusinessException;
 
 	@PUT
@@ -39,4 +41,10 @@ public interface UserWebService {
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public JResponse<UserContext> updatePassword(final UserContext userContext) throws BusinessException;
+
+	@POST
+	@Path("create")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public JResponse<User> createUser(final UserContext userContext) throws BusinessException;
 }
