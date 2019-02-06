@@ -9,7 +9,7 @@ ENV MYSQL_DATA_DIRECTORY=/opt/data/system/mysql
 ADD account-mysql.cnf /root/.my.cnf
 ADD backup /usr/bin/backup
 ADD localtime /etc/localtime
-ADD accountmanager.sql /accountmanager.sql
+ADD accountmanager_with_data.sql /accountmanager.sql
 
 RUN apk add --update mariadb mariadb-client; \
     rm /usr/bin/mysql_client_test_embedded; \
@@ -17,8 +17,6 @@ RUN apk add --update mariadb mariadb-client; \
     rm /usr/bin/mysqltest_embedded;
 
 COPY run.sh /run.sh
-
-VOLUME /opt/data
 
 EXPOSE 3306
 

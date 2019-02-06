@@ -1,20 +1,20 @@
-version: '2'
+version: '2.1'
 services:
     mysql-account:
        build: mysql
        ports: 
-        - "3308:3306"
+        - "3340:3306"
        network_mode: bridge
        container_name: mysql-account
        volumes:
-         - /opt/data/webapp/account:/usr/local/mysql
+         - ${ACCOUNT_MYSQL_DATA:-/opt/data/mysql}:/usr/local/mysql
        hostname: mysql-account
        restart: unless-stopped
     tomcat-account:
        build: tomcat
-       # ports:
-       #   - "8081:8080"
-       #   - "8001:8000"
+       ports:
+          - "8091:8080"
+          - "8001:8000"
        network_mode: bridge
        container_name: tomcat-account
        depends_on:
@@ -22,6 +22,6 @@ services:
        links:
          - mysql-account
        volumes: 
-         - /opt/data/webapp/account:/usr/local/tomcat/webapps
+         - ${ACCOUNT_TOMCAT:-/opt/webapps}:/usr/local/tomcat/webapps
        hostname: tomcat-account
        restart: unless-stopped
