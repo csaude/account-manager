@@ -30,3 +30,5 @@ account-manager-web/.metadata/
 tomcat/*.war
 
 .DS_Store
+.idea/
+**/*.iml
