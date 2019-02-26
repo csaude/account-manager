@@ -3,25 +3,28 @@
  */
 package mz.co.geekframeworks.core.user.webservice;
 
-import javax.inject.Inject;
-import javax.persistence.NoResultException;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.sun.jersey.api.JResponse;
-
+import mz.co.geekframeworks.core.dto.UserContextDTO;
 import mz.co.geekframeworks.core.security.AuthenticationService;
 import mz.co.geekframeworks.core.user.model.User;
 import mz.co.geekframeworks.core.user.model.UserContextFactory;
 import mz.co.geekframeworks.core.user.service.UserQueryService;
 import mz.co.geekframeworks.core.user.service.UserService;
+import mz.co.geekframeworks.core.util.ConfigUtils;
 import mz.co.geekframeworks.core.util.UserContextUtil;
 import mz.co.mozview.frameworks.core.exception.BusinessException;
 import mz.co.mozview.frameworks.core.webservices.adapter.Entry;
 import mz.co.mozview.frameworks.core.webservices.model.UserContext;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * @author Stélio Moiane
@@ -30,6 +33,8 @@ import mz.co.mozview.frameworks.core.webservices.model.UserContext;
 @Service(UserWebService.NAME)
 @Path("users")
 public class UserWebServiceImpl implements UserWebService {
+	// Hard code the secret key for encrypting the JWT token for now.
+	private static String JWT_KEY;
 
 	@Inject
 	private UserQueryService userQueryService;
@@ -39,6 +44,20 @@ public class UserWebServiceImpl implements UserWebService {
 
 	@Inject
 	private AuthenticationService authenticationService;
+
+	static {
+		try {
+			JWT_KEY = ConfigUtils.retrieveJWTKeyFromRunTime();
+			System.out.println("Key is:" + JWT_KEY);
+			if(JWT_KEY == null) {
+				JWT_KEY = "secret";
+			}
+		} catch (IOException e) {
+			// We don't care, we gonna use secret anyway (the default)
+			e.printStackTrace();
+			JWT_KEY = "secret";
+		}
+	}
 
 	@Override
 	public Response findUserBySessionId(final String sessionId) throws BusinessException {
@@ -70,26 +89,35 @@ public class UserWebServiceImpl implements UserWebService {
 	}
 
 	@Override
-	public JResponse<UserContext> login(final UserContext userContext) throws BusinessException {
+	public Response login(final UserContext userContext) throws BusinessException, IOException {
+		try {
+			final UserContextDTO context = new UserContextDTO();
+			final User authenticated = (User)this.authenticationService.getAuthentication(userContext.getUsername(),
+					userContext.getPassword()).getPrincipal();
 
-		final UserContext context = new UserContext();
+			if(authenticated != null && authenticated.isAccountNonExpired() && authenticated.isAccountNonLocked()) {
+				context.setUsername(authenticated.getUsername());
+				context.setFullName(authenticated.getFullName());
+				context.setEmail(authenticated.getEmail());
+				context.setUuid(authenticated.getUuid());
+				Algorithm algHS = Algorithm.HMAC256(JWT_KEY);
+				String authToken = JWT.create().withIssuer("account-manager").withSubject(authenticated.getUsername()).withIssuedAt(new Date())
+						.withClaim("uuid", authenticated.getUuid())
+						.sign(algHS);
 
-		final Authentication authentication = this.authenticationService.getAuthentication(userContext.getUsername(),
-		        userContext.getPassword());
+				context.setJwtToken(authToken);
 
-		final User authenticated = (User) authentication.getPrincipal();
+				return Response.ok(context).build();
+			} else {
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.header("Content-Type", "text/plain")
+						.entity("Account expired or locked. Contact the system administrator").build();
+			}
 
-		context.setUsername(authenticated.getUsername());
-		context.setFullName(authenticated.getFullName());
-		context.setEmail(authenticated.getEmail());
-		context.setSessionId(authenticated.getSessionId());
-		context.setAccountNonExpired(authenticated.isAccountNonExpired());
-		context.setAccountNonLocked(authenticated.isAccountNonLocked());
-		context.setCredentialsNonExpired(authenticated.isCredentialsNonExpired());
-		context.setEnabled(authenticated.isEnabled());
-		context.setUuid(authenticated.getUuid());
-
-		return JResponse.ok(context).build();
+		} catch (BusinessException be) {
+			be.printStackTrace();
+			return Response.status(Response.Status.UNAUTHORIZED).header("Content-Type", "text/plain").entity(be.getMessage()).build();
+		}
 	}
 
 	@Override
