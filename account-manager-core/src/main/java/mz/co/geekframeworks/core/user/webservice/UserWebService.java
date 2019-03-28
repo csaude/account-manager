@@ -15,36 +15,40 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.JResponse;
 
+import mz.co.geekframeworks.core.dto.UserContextDTO;
 import mz.co.geekframeworks.core.user.model.User;
 import mz.co.mozview.frameworks.core.exception.BusinessException;
 import mz.co.mozview.frameworks.core.webservices.model.UserContext;
+import org.json.simple.JSONObject;
+
+import java.io.IOException;
 
 /**
  * @author Stélio Moiane
  *
  */
 public interface UserWebService {
-	public static final String NAME = "mz_co_geekframeworks_core_user_webservice.UserWebService";
+	String NAME = "mz_co_geekframeworks_core_user_webservice.UserWebService";
 
 	@GET
 	@Path("{sessionId}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response findUserBySessionId(@PathParam("sessionId") final String sessionId) throws BusinessException;
+	Response findUserBySessionId(@PathParam("sessionId") final String sessionId) throws BusinessException;
 
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public JResponse<UserContext> login(final UserContext userContext) throws BusinessException;
+	Response login(final UserContext userContext) throws BusinessException, IOException;
 
 	@PUT
 	@Path("update")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public JResponse<UserContext> updatePassword(final UserContext userContext) throws BusinessException;
+	JResponse<UserContext> updatePassword(final UserContext userContext) throws BusinessException;
 
 	@POST
 	@Path("create")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public JResponse<User> createUser(final UserContext userContext) throws BusinessException;
+	JResponse<User> createUser(final UserContext userContext) throws BusinessException;
 }
